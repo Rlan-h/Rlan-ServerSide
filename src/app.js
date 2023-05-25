@@ -1,5 +1,7 @@
 import express from 'express'
 
+import { APP_PORT } from './config/config_default.js'
+
 // 导入路由模块
 import accountRouter from './routers/account_router.js'
 import userRouter from './routers/user_router.js'
@@ -9,6 +11,8 @@ import commentRouter from './routers/comment_router.js'
 
 const app = express()
 
+app.use(express.json())
+
 // 注册路由
 app.use('/api', accountRouter)
   .use('/my', userRouter)
@@ -16,6 +20,6 @@ app.use('/api', accountRouter)
   .use('/my/article', categoryRouter)
   .use('/my/article', commentRouter)
 
-app.listen(3000, () => {
-  console.log('server is running at http://127.0.0.1:3000')
+app.listen(APP_PORT, () => {
+  console.log(`server is running at http://127.0.0.1:${APP_PORT}`)
 })
