@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { APP_PORT } from './config/config_default.js'
+import config from './config/config_default.js'
 
 // 导入路由模块
 import accountRouter from './routers/account_router.js'
@@ -20,6 +20,6 @@ app.use('/api', accountRouter)
   .use('/my/article', categoryRouter)
   .use('/my/article', commentRouter)
 
-app.listen(APP_PORT, () => {
-  console.log(`server is running at http://127.0.0.1:${APP_PORT}`)
+app.listen(config.APP_PORT, () => {
+  console.log(`server is running at http://127.0.0.1:${config.APP_PORT}`)
 })

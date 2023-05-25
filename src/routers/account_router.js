@@ -8,4 +8,7 @@ const router = express.Router()
 // 注册路由
 router.post('/register', accountValidator, accountVerify, bcryptPwd, account_controller.register)
 
+// 登录路由
+router.post('/login', account_controller.login)
+
 export default router

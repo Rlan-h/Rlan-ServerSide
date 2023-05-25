@@ -1,9 +1,9 @@
 import { Sequelize } from "sequelize"
 
-import { MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PWD, MYSQL_DB } from '../config/config_default.js'
+import config from '../config/config_default.js'
 
-const seq = new Sequelize(MYSQL_DB, MYSQL_USER, MYSQL_PWD, {
-  host: MYSQL_HOST,
+const seq = new Sequelize(config.MYSQL_DB, config.MYSQL_USER, config.MYSQL_PWD, {
+  host: config.MYSQL_HOST,
   dialect: 'mysql'
 })
 
