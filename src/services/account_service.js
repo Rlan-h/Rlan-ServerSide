@@ -1,10 +1,21 @@
 import Account from "../models/account_model.js"
+import User from "../models/user_model.js"
+import seq from "../db/seq.js"
 
 class AccountService {
   async createAccount(user_name, password, email) {
     // 插入数据
-    const res = await Account.create({ user_name, password, email })
-    return res.dataValues
+    // const res = await Account.create({ user_name, password, email })
+    // console.log(res.toJSON())
+    // return res.dataValues
+
+    const result = await seq.transaction(async (t) => {
+      const account = await Account.create({ user_name, password, email },{transaction: t})
+      await User.create({ user_name, email }, {transaction: t})
+      return account
+    })
+
+    return result.dataValues
   }
 
   async getAccountInfo({ id, user_name, password, email, is_admin }) {

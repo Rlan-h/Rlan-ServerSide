@@ -11,7 +11,10 @@ import commentRouter from './routers/comment_router.js'
 
 const app = express()
 
+// 配置解析 json 格式数据的中间件
 app.use(express.json())
+// 配置解析 application/x-www-form-urlencoded 格式的表单数据的中间件
+app.use(express.urlencoded({ extended: false }))
 
 // 注册路由
 app.use('/api', accountRouter)
