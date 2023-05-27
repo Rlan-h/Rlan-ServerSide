@@ -3,7 +3,7 @@ import User from "../models/user_model.js"
 
 class UserService {
 
-  async getUserInfo({ userId: id }) {
+  async getUserInfo(id) {
     console.log(id)
     const whereOpt = {}
     id && Object.assign(whereOpt, { id })
@@ -25,7 +25,7 @@ class UserService {
   }
 
   async updateUserInfo(userId, genUser) { 
-    let user = await this.getUserInfo({ userId })
+    let user = await this.getUserInfo(userId)
     console.log(user)
     user.set(genUser)
     await user.save()

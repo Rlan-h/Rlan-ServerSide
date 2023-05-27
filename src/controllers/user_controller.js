@@ -32,6 +32,32 @@ class UserController {
       })
     }
   }
+
+  async getUser(req, res, next) { 
+    try {
+      const token = req.headers.authorization.split(' ')[1]
+      // console.log(token)
+      const userId = await resolveToken(token)
+      // console.log(userId)
+      const result = await user_service.getUserInfo(userId)
+      // console.log(result)
+      res.send({
+        code: 0,
+        message: '获取成功',
+        result: {
+          data: result
+        }
+      })
+    } catch (error) {
+      console.error(error)
+      res.send({
+        code: 1,
+        message: '获取失败',
+        result: {}
+      })
+    }
+  
+  }
 }
 
 export default new UserController()
