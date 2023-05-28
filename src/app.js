@@ -1,4 +1,6 @@
+import path from 'path'
 import express from 'express'
+import { fileURLToPath } from 'url'
 
 import config from './config/config_default.js'
 
@@ -10,6 +12,12 @@ import categoryRouter from './routers/category_router.js'
 import commentRouter from './routers/comment_router.js'
 
 const app = express()
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+// 静态资源配置
+// app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, '../public')))
 
 // 配置解析 json 格式数据的中间件
 app.use(express.json())

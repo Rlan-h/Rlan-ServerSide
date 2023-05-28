@@ -37,10 +37,9 @@ class UserController {
     try {
       const token = req.headers.authorization.split(' ')[1]
       // console.log(token)
-      const userId = await resolveToken(token)
-      // console.log(userId)
+      const { id: userId } = await resolveToken(token)
+      console.log('userId',userId)
       const result = await user_service.getUserInfo(userId)
-      // console.log(result)
       res.send({
         code: 0,
         message: '获取成功',

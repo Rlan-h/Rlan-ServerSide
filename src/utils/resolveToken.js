@@ -6,8 +6,8 @@ export const resolveToken = async (token) => {
     if (err) {
       console.error(err)
     } else {
-      let userId = decoded.id
-      return userId
+      console.log(decoded)
+      return decoded
     }
   })
 }
