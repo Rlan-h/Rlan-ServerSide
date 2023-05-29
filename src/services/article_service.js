@@ -3,8 +3,8 @@ import Article from "../models/article_model.js"
 class ArticleService {
 
   // 保存封面图片
-  async saveCoverImg(uuid, cover) {
-    
+  async saveCoverImg(author, cover) {
+    return await Article.create({author, cover})
   }
 
   // 获取所有文章
@@ -30,9 +30,22 @@ class ArticleService {
     }) 
   }
 
+  // 获取草稿文章
+  async queryDraftArticles(author) {
+    
+    return await Article.findAll({
+      where: {
+        author,
+        draft: 1
+      }
+    })
+  }
+
   // 新增文章
-  async addAtricle(articleInfo) { 
+  async addAtricle(articleInfo, author) { 
     const article = new Article()
+    article.cover = 'covers/default.jpg'
+    article.author = author
     article.set(articleInfo)
     return await article.save()
   }

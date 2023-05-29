@@ -2,17 +2,53 @@ import fs from 'fs'
 import { Blob } from 'buffer'
 import article_service from "../services/article_service.js"
 import { resolveToken } from "../utils/resolveToken.js"
+import { dateFormat } from "../utils/dateFormat.js"
 
 class ArticleController {
 
   // 图片上传
-  async uploadCover(req, res, next) { 
+  async uploadCover(req, res, next) {
+    const decoded = await resolveToken(req.headers.authorization.split(' ')[1])
+    console.log(decoded)
+    const draftArticles = await article_service.queryDraftArticles(decoded.user_name)
+    const oldCover = draftArticles[0]?.cover
+    console.log(draftArticles)
+    if (draftArticles.length !== 0) {
+      draftArticles[0].set({
+        cover: req.file.path.replace(/\\/g, '/').replace('public/', '')
+      })
+      draftArticles[0].save()
+      fs.unlink(`public/${oldCover}`, (err) => { 
+        if (err) {
+          if (err.code === 'ENOENT') {
+            console.log('文件不存在')
+          } else {
+            throw err
+          }
+        } else {
+          console.log('文件以成功删除')
+        }
+      })
+      return res.send({
+        code: 0,
+        message: '上传成功',
+        result: {
+          data: draftArticles,
+          coverUrl: draftArticles[0].cover,
+        }
+      })
+    }
     // const uuid = req.body.uuid
     // console.log(uuid)
     console.log(req.file)
-    const cover = fs.readFileSync(req.file.path)
+    // const cover = fs.readFileSync(req.file.path)
 
-    const blob = new Blob([cover], { type: ['image/jpeg', 'image/png'] })
+    // const blob = new Blob([cover], { type: ['image/jpeg', 'image/png'] })
+    const coverUrl = decodeURIComponent(req.file.path.replace(/\\/g, '/')).replace('public/', '')
+    const result = await article_service.saveCoverImg(decoded.user_name, coverUrl )
+    console.log(result)
+    result.dataValues.date = dateFormat(result.dataValues.date)
+    // 设置响外
     // console.log(blob)
     // await article_service.saveCoverImg(uuid,blob)
     // 设置响应头
@@ -24,8 +60,8 @@ class ArticleController {
       code: 0,
       message: '上传成功',
       result: {
-        url: decodeURIComponent(req.file.path.replace(/\\/g, '/')),
-        data: blob
+        data: result,
+        coverUrl: coverUrl,
       }
     })
 
@@ -33,15 +69,34 @@ class ArticleController {
 
   }
 
-  // 新增文章
+  // 提交文章
   async createArticle(req, res, next) {
     const article = req.body
     const token = req.headers.authorization.split(' ')[1]
-    const userInfo = await resolveToken(token)
+    const decoded = await resolveToken(token)
+    const draftArticles = await article_service.queryDraftArticles(decoded.user_name)
+    if (draftArticles.length !== 0) { 
+      draftArticles[0].set({
+        category: article.category,
+        title: article.title,
+        content: article.content,
+        date: dateFormat(new Date()),
+        draft: 0
+      })
+      draftArticles[0].save()
+      return res.send({
+        code: 0,
+        message: '文章插入成功',
+        result: {
+          data: draftArticles,
+        }
+      })
     
-    article.author = userInfo.user_name
+     }
+    
+    // article.author = userInfo.user_name
     // console.log(article) 
-    const result = await article_service.addAtricle(article)
+    const result = await article_service.addAtricle(article, decoded.user_name)
     res.send({
       code: 0,
       message: '文章上传成功，等待管理员审核',
@@ -113,6 +168,19 @@ class ArticleController {
     res.send({
       code: 0,
       message: '获取指定分类标签文章成功',
+      result: {
+        data: result
+      }
+    })
+  }
+
+  // 获取草稿文章
+  async getDraftArticles(req, res, next) { 
+    const decoded = await resolveToken(req.headers.authorization.split(' ')[1])
+    const result = await  article_service.queryDraftArticles(decoded.user_name)
+    res.send({
+      code: 0,
+      message: '获取草稿文章成功',
       result: {
         data: result
       }

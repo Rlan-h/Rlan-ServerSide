@@ -2,6 +2,7 @@ import { DataTypes } from "sequelize"
 
 import seq from "../db/seq.js"
 
+
 const Article = seq.define('Article', {
   uuid: {
     type: DataTypes.UUID,
@@ -9,12 +10,12 @@ const Article = seq.define('Article', {
   },
   category: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
     comment: '文章分类'
   },
   title: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
     comment: '文章标题'
   },
   author: {
@@ -30,7 +31,7 @@ const Article = seq.define('Article', {
   },
   content: {
     type: DataTypes.TEXT,
-    allowNull: false,
+    allowNull: true,
     comment: '文章内容'
   },
   praiseNum: {
@@ -46,9 +47,15 @@ const Article = seq.define('Article', {
     comment: '文章评论数'
   },
   cover: {
-    type: DataTypes.BLOB,
+    type: DataTypes.STRING,
     allowNull: true,
     comment: '文章封面'
+  },
+  draft: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: 1,
+    comment: '是否为草稿，1为草稿，0为正式稿'
   },
   state: {
     type: DataTypes.ENUM,

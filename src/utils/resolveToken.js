@@ -6,7 +6,7 @@ export const resolveToken = async (token) => {
     if (err) {
       console.error(err)
     } else {
-      console.log(decoded)
+      // console.log(decoded)
       return decoded
     }
   })
