@@ -49,6 +49,17 @@ class ArticleService {
     article.set(articleInfo)
     return await article.save()
   }
+
+
+  // 修改文章
+  async updateArticle(where, newInfo) {
+    // console.log(where)
+    const genInfo = await Article.findOne({ where })
+    // console.log(genInfo)
+    genInfo.set(newInfo)
+    // console.log(genInfo)
+    return await genInfo.save()
+  }
 }
 
 export default new ArticleService()

@@ -26,13 +26,11 @@ router.get('/articles/:category', article_controller.getArticlesByCategory)
 // 获取草稿文章
 router.get('/articles/draft/:author', article_controller.getDraftArticles)
 
-// 修改指定 id 的文章
-router.put('/article/:id', (req, res) => { 
-  res.send('修改法 id 的文章成功')
-})
+// 修改指定 uuid 的文章
+router.put('/articles/:id', article_controller.updateArticleByUuid)
 
 // 删除指定 id 的文章
-router.delete('/article/:id', (req, res) => {
+router.delete('/article/:uuid', (req, res) => {
   res.send('删除指定 id 的文章成功')
 })
 
