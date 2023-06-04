@@ -27,11 +27,9 @@ router.get('/articles/:category', article_controller.getArticlesByCategory)
 router.get('/articles/draft/:author', article_controller.getDraftArticles)
 
 // 修改指定 uuid 的文章
-router.put('/articles/:id', article_controller.updateArticleByUuid)
+router.put('/articles/:uuid', article_controller.updateArticleByUuid)
 
-// 删除指定 id 的文章
-router.delete('/article/:uuid', (req, res) => {
-  res.send('删除指定 id 的文章成功')
-})
+// 删除指定 uuid 的文章
+router.delete('/articles/:uuid', article_controller.deleteArticleByUuid)
 
 export default router

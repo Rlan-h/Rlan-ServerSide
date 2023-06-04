@@ -63,6 +63,12 @@ const Article = seq.define('Article', {
     allowNull: false,
     defaultValue: '待审核',
     comment: '文章状态，0：待审核，1：成功发布'
+  },
+  is_delete: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: 0,
+    comment: '是否删除，0：有效，1：删除'
   }
 })
 

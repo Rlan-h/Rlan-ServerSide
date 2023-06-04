@@ -127,8 +127,25 @@ class ArticleController {
   }
 
   // 根据 id 删除文章
-  async deleteArticle(req, res, next) {
-    res.send('删除数据')
+  async deleteArticleByUuid(req, res, next) {
+    console.log(req.query)
+    const uuid = req.query.uuid
+    console.log(uuid)
+    try {
+      const result = await article_service.deleteArticle({ uuid })
+      res.send({
+        code: 0,
+        message: '文章删除成功',
+        result: result ? result : {}
+      })
+    } catch (error) {
+      console.error(error)
+      res.send({
+        code: 1,
+        message: '删除文章失败',
+        result: {}
+      })
+    }
   }
 
   // 根据 id 获取文章

@@ -60,6 +60,15 @@ class ArticleService {
     // console.log(genInfo)
     return await genInfo.save()
   }
+
+
+  // 删除文章
+  async deleteArticle(where) { 
+    const genInfo = await Article.findOne({ where })
+    // console.log(genInfo)
+    genInfo.set({ is_delete: 1 })
+    return await genInfo.save()
+  }
 }
 
 export default new ArticleService()
