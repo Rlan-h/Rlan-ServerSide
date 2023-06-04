@@ -1,3 +1,5 @@
+import { Op } from "sequelize"
+
 import Article from "../models/article_model.js"
 
 class ArticleService {
@@ -17,6 +19,35 @@ class ArticleService {
     return await Article.findAll({
       where: {
         author
+      }
+    })
+  }
+
+  // 获取最新文章列表
+  async queryLatestArticles(today, lastWeek) {
+    // console.log(today)
+    // console.log(lastWeek)
+    return await Article.findAll({
+      where: {
+        createdAt: {
+          [Op.between]: [lastWeek, today]
+        }
+      }
+    })
+  }
+
+  // 获取最热文章列表(点赞数大于等于10，评论数大于等于10)
+  async queryHottestArticles() {
+    return await Article.findAll({
+      where: {
+        praise_count: {
+          // 点赞数大于等于10
+          [Op.gte]: 10
+        },
+        comment_count: {
+          // 评论数大于等于10
+          [Op.gte]: 10
+        }
       }
     })
   }
@@ -46,6 +77,7 @@ class ArticleService {
     const article = new Article()
     article.cover = 'covers/default.jpg'
     article.author = author
+    article.draft = 0
     article.set(articleInfo)
     return await article.save()
   }

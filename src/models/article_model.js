@@ -34,13 +34,13 @@ const Article = seq.define('Article', {
     allowNull: true,
     comment: '文章内容'
   },
-  praiseNum: {
+  praise_count: {
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0,
     comment: '文章点赞数'
   },
-  commentNum: {
+  comment_count: {
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0,

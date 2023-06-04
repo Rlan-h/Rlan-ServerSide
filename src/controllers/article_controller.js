@@ -192,6 +192,50 @@ class ArticleController {
     })
   }
 
+  // 获取最新文章列表
+  async getLatestArticles(req, res, next) {
+    try {
+      const today = new Date()
+      const lastWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7)
+      const result = await article_service.queryLatestArticles(today, lastWeek)
+      res.send({
+        code: 0,
+        message: '获取最新文章列表成功',
+        result: {
+          data: result
+        }
+      })
+    } catch (error) {
+      console.error(error)
+      res.send({
+        code: 1,
+        message: '获取最新文章列表失败',
+        result: {}
+      })
+    }
+  }
+
+  // 获取最热文章列表
+  async getHottestArticles(req, res, next) {
+    try {
+      const result = await article_service.queryHottestArticles()
+      res.send({
+        code: 0,
+        message: '获取最热文章列表成功',
+        result: {
+          data: result
+        }
+      })
+    } catch (error) {
+      console.error(error)
+      res.send({
+        code: 1,
+        message: '获取最热文章列表失败',
+        result: {}
+      })
+    }
+  }
+
   // 获取指定文章分类标签的文章
   async getArticlesByCategory(req, res, next) {
     const result = await article_service.queryArticlesByCategory(req.query.category)

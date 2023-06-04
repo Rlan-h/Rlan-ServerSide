@@ -20,6 +20,12 @@ router.get('/article/:id', article_controller.getArticleById)
 // 获取指定用户的文章
 router.get('/articles/user/:author', article_controller.getArticlesByAuthor)
 
+// 获取最新文章(一星期以内)
+router.get('/articles/latest', article_controller.getLatestArticles)
+
+// 获取最热文章
+router.get('/articles/hottest', article_controller.getHottestArticles)
+
 // 获取指定文章分类标签的文章
 router.get('/articles/:category', article_controller.getArticlesByCategory)
 
