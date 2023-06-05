@@ -1,5 +1,4 @@
 import fs from 'fs'
-import { Blob } from 'buffer'
 import article_service from '../services/article_service.js'
 import { resolveToken } from '../utils/resolveToken.js'
 import { dateFormat } from '../utils/dateFormat.js'
@@ -78,7 +77,7 @@ class ArticleController {
         category: article.category,
         title: article.title,
         content: article.content,
-        date: dateFormat(new Date()),
+        date: new Date(),
         draft: 0
       })
       draftArticles[0].save()
@@ -148,11 +147,6 @@ class ArticleController {
     }
   }
 
-  // 根据 id 获取文章
-  async getArticle(req, res, next) {
-    res.send('获取数据')
-  }
-
   // 获取所有文章
   async getAllArticles(req, res, next) {
     try {
@@ -198,6 +192,7 @@ class ArticleController {
       const today = new Date()
       const lastWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7)
       const result = await article_service.queryLatestArticles(today, lastWeek)
+      result.date = dateFormat(result.date)
       res.send({
         code: 0,
         message: '获取最新文章列表成功',

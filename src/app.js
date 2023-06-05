@@ -1,5 +1,6 @@
 import path from 'path'
 import express from 'express'
+import cors from 'cors'
 import { fileURLToPath } from 'url'
 
 import config from './config/config_default.js'
@@ -12,6 +13,8 @@ import categoryRouter from './routers/category_router.js'
 import commentRouter from './routers/comment_router.js'
 
 const app = express()
+
+app.use(cors())
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
